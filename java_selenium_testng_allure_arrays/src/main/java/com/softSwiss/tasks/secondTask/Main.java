@@ -1,50 +1,64 @@
 package com.softSwiss.tasks.secondTask;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Objects;
 
 public class Main {
+    public static void main(String[] args) {
+        String path = "src/main/resources/";
+        String firstFileName = "array1.txt";
+        String secondFileName = "array2.txt";
 
-    int[] uploadFilesAndGetArrayOfUniqueElements() {
+        String firstStringWithWhitespaces = getStringFromFile(path, firstFileName);
+        String secondStringWithWhitespaces = getStringFromFile(path, secondFileName);
 
-        String firstString = null;
-        String secondString = null;
+        String firstString = removeWhitespacesFromString(firstStringWithWhitespaces);
+        String secondString = removeWhitespacesFromString(secondStringWithWhitespaces);
+        int[] firstArray = transformStringToIntArray(firstString);
+        int[] secondArray = transformStringToIntArray(secondString);
+        int[] finalArray = mergeArrays(firstArray, secondArray);
+        int[] finalSortedArray = bubbleSortOfArray(finalArray);
 
-        /* getting Strings from files */
+        for (int element : finalSortedArray) {
+            System.out.print(element + " ");
+        }
+    }
+
+    private static String getStringFromFile(String pathToFile, String fileName) {
+
+        String unloadString;
         try {
-            firstString = Files.readAllLines(Paths.get("src/main/resources/", "array1.txt")).get(0);
-            secondString = Files.readAllLines(Paths.get("src/main/resources/", "array2.txt")).get(0);
+            unloadString = Files.readAllLines(Paths.get(pathToFile, fileName)).get(0);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new UncheckedIOException(e);
         }
+        return unloadString;
+    }
 
-        /* removing whitespaces */
-        firstString = Objects.requireNonNull(firstString).replaceAll("\\s+", "");
-        secondString = Objects.requireNonNull(secondString).replaceAll("\\s+", "");
+    private static String removeWhitespacesFromString(String string) {
+        return string.replaceAll("\\s+", "");
+    }
 
-        int[] firstArray = new int[Objects.requireNonNull(firstString).length()];
-        int[] secondArray = new int[Objects.requireNonNull(secondString).length()];
 
-        /* transforming Strings to arrays */
-        for (int i = 0; i < firstArray.length; i++) {
-            firstArray[i] = Integer.parseInt(String.valueOf(firstString.charAt(i)));
+    private static int[] transformStringToIntArray(String string) {
+
+        int[] array = new int[string.length()];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = Integer.parseInt(String.valueOf(string.charAt(i)));
         }
+        return array;
+    }
 
-        for (int i = 0; i < secondArray.length; i++) {
-            secondArray[i] = Integer.parseInt(String.valueOf(secondString.charAt(i)));
-        }
-
+    private static int[] mergeArrays(int[] firstArray, int[] secondArray) {
         int[] finalArrayWithNoUniqueElements = new int[firstArray.length + secondArray.length];
 
-        /* merging of 2 arrays */
         System.arraycopy(firstArray, 0, finalArrayWithNoUniqueElements, 0, firstArray.length);
         System.arraycopy(secondArray, 0, finalArrayWithNoUniqueElements, firstArray.length, finalArrayWithNoUniqueElements.length - firstArray.length);
 
         int noUniqueElements = finalArrayWithNoUniqueElements.length;
 
-        /* removing repeat elements  */
         for (int i = 0; i < noUniqueElements; i++) {
             for (int m = i + 1; m < noUniqueElements; m++) {
                 if (finalArrayWithNoUniqueElements[i] == finalArrayWithNoUniqueElements[m]) {
@@ -58,7 +72,10 @@ public class Main {
 
         System.arraycopy(finalArrayWithNoUniqueElements, 0, finalArray, 0, noUniqueElements);
 
-        /* the bubble sorting of the final array*/
+        return finalArray;
+    }
+
+    private static int[] bubbleSortOfArray(int[] finalArray) {
         for (int i = 0; i < finalArray.length; i++) {
             for (int m = i + 1; m < finalArray.length; m++) {
                 int currentElement = finalArray[i];
@@ -70,11 +87,6 @@ public class Main {
                 }
             }
         }
-        /* printing an array values in the console */
-        for (int element : finalArray) {
-            System.out.print(element + " ");
-        }
-
         return finalArray;
     }
 }
