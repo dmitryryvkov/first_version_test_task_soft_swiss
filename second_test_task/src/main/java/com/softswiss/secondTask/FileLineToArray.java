@@ -1,14 +1,11 @@
-package com.softSwiss.tasks.secondTask;
+package com.softswiss.secondTask;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class ArrayTransformer {
-    String path = "src/main/resources/";
-    String firstFileName = "array1.txt";
-    String secondFileName = "array2.txt";
+public class FileLineToArray {
 
     public int[] process(String path, String firstFileName, String secondFileName) {
         String firstStringWithWhitespaces = getStringFromFile(path, firstFileName);
