@@ -95,6 +95,10 @@ public class FileLineToArray {
                 }
             }
         }
+
+        for (int element : finalArray) {
+            System.out.print(element);
+        }
         return finalArray;
     }
 }
