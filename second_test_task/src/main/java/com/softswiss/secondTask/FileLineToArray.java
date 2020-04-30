@@ -1,5 +1,8 @@
 package com.softswiss.secondTask;
 
+import com.softswiss.exceptions.EmptyFileException;
+import com.softswiss.exceptions.FileNameException;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -21,23 +24,22 @@ public class FileLineToArray {
     }
 
     private String getStringFromFile(String pathToFile, String fileName) {
-
         String unloadString;
-        try {
-            if (pathToFile.length() != 0 && fileName.length() != 0) {
+        if (pathToFile.length() != 0 && fileName.length() != 0) {
+            try {
                 if (!Files.readAllLines(Paths.get(pathToFile, fileName)).isEmpty()) {
                     unloadString = Files.readAllLines(Paths.get(pathToFile, fileName)).get(0);
                 } else {
-                    throw new IllegalStateException();
+                    throw new EmptyFileException();
                 }
-            } else {
-                throw new IllegalStateException();
+
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
             }
-
-
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+        } else {
+            throw new FileNameException();
         }
+
         return unloadString;
     }
 
@@ -49,14 +51,10 @@ public class FileLineToArray {
 
         int[] array = new int[string.length()];
         for (int i = 0; i < array.length; i++) {
-            if (!String.valueOf(string.charAt(i)).equals(" ")) {
-                try {
-                    array[i] = Integer.parseInt(String.valueOf(string.charAt(i)));
-                } catch (Exception e) {
-                    throw new IllegalArgumentException(e);
-                }
-            } else {
-                throw new IllegalArgumentException();
+            try {
+                array[i] = Integer.parseInt(String.valueOf(string.charAt(i)));
+            } catch (ClassCastException e) {
+                throw new IllegalArgumentException(e);
             }
         }
         return array;
