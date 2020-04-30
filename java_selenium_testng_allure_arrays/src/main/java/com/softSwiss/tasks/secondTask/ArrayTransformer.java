@@ -5,12 +5,12 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class Main {
-    public static void main(String[] args) {
-        String path = "src/main/resources/";
-        String firstFileName = "array1.txt";
-        String secondFileName = "array2.txt";
+public class ArrayTransformer {
+    String path = "src/main/resources/";
+    String firstFileName = "array1.txt";
+    String secondFileName = "array2.txt";
 
+    public int[] process(String path, String firstFileName, String secondFileName) {
         String firstStringWithWhitespaces = getStringFromFile(path, firstFileName);
         String secondStringWithWhitespaces = getStringFromFile(path, secondFileName);
 
@@ -19,39 +19,48 @@ public class Main {
         int[] firstArray = transformStringToIntArray(firstString);
         int[] secondArray = transformStringToIntArray(secondString);
         int[] finalArray = mergeArrays(firstArray, secondArray);
-        int[] finalSortedArray = bubbleSortOfArray(finalArray);
 
-        for (int element : finalSortedArray) {
-            System.out.print(element + " ");
-        }
+        return bubbleSortOfArray(finalArray);
     }
 
-    private static String getStringFromFile(String pathToFile, String fileName) {
+    private String getStringFromFile(String pathToFile, String fileName) {
 
         String unloadString;
         try {
-            unloadString = Files.readAllLines(Paths.get(pathToFile, fileName)).get(0);
+            if(pathToFile.length() != 0 && fileName.length() != 0){
+                if (!Files.readAllLines(Paths.get(pathToFile, fileName)).isEmpty()) {
+                    unloadString = Files.readAllLines(Paths.get(pathToFile, fileName)).get(0);
+                } else {
+                    throw new IllegalStateException();
+                }
+            }
+            else{
+                throw new IllegalStateException();
+            }
+
+
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
         return unloadString;
     }
 
-    private static String removeWhitespacesFromString(String string) {
+    private String removeWhitespacesFromString(String string) {
         return string.replaceAll("\\s+", "");
     }
 
-
-    private static int[] transformStringToIntArray(String string) {
+    private int[] transformStringToIntArray(String string) {
 
         int[] array = new int[string.length()];
         for (int i = 0; i < array.length; i++) {
             array[i] = Integer.parseInt(String.valueOf(string.charAt(i)));
         }
+
+        //гг в файле
         return array;
     }
 
-    private static int[] mergeArrays(int[] firstArray, int[] secondArray) {
+    private int[] mergeArrays(int[] firstArray, int[] secondArray) {
         int[] finalArrayWithNoUniqueElements = new int[firstArray.length + secondArray.length];
 
         System.arraycopy(firstArray, 0, finalArrayWithNoUniqueElements, 0, firstArray.length);
@@ -69,13 +78,12 @@ public class Main {
         }
 
         int[] finalArray = new int[noUniqueElements];
-
         System.arraycopy(finalArrayWithNoUniqueElements, 0, finalArray, 0, noUniqueElements);
 
         return finalArray;
     }
 
-    private static int[] bubbleSortOfArray(int[] finalArray) {
+    private int[] bubbleSortOfArray(int[] finalArray) {
         for (int i = 0; i < finalArray.length; i++) {
             for (int m = i + 1; m < finalArray.length; m++) {
                 int currentElement = finalArray[i];
