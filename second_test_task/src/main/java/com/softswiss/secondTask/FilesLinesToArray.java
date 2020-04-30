@@ -8,7 +8,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class FileLineToArray {
+public class FilesLinesToArray {
 
     public int[] process(String path, String firstFileName, String secondFileName) {
         String firstStringWithWhitespaces = getStringFromFile(path, firstFileName);

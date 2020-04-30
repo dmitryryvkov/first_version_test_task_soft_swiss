@@ -5,12 +5,12 @@ import com.softswiss.exceptions.FileNameException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class FileLineToArrayTest {
+public class FilesLinesToArrayTest {
     private String path = "src/test/resources/";
     private String firstFileName = "array1.txt";
     private String secondFileName = "array2.txt";
 
-    private FileLineToArray arrayTransformer = new FileLineToArray();
+    private FilesLinesToArray arrayTransformer = new FilesLinesToArray();
 
     @Test()
     public void testProcess() {
