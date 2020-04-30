@@ -27,14 +27,13 @@ public class ArrayTransformer {
 
         String unloadString;
         try {
-            if(pathToFile.length() != 0 && fileName.length() != 0){
+            if (pathToFile.length() != 0 && fileName.length() != 0) {
                 if (!Files.readAllLines(Paths.get(pathToFile, fileName)).isEmpty()) {
                     unloadString = Files.readAllLines(Paths.get(pathToFile, fileName)).get(0);
                 } else {
                     throw new IllegalStateException();
                 }
-            }
-            else{
+            } else {
                 throw new IllegalStateException();
             }
 
@@ -53,10 +52,16 @@ public class ArrayTransformer {
 
         int[] array = new int[string.length()];
         for (int i = 0; i < array.length; i++) {
-            array[i] = Integer.parseInt(String.valueOf(string.charAt(i)));
+            if (!String.valueOf(string.charAt(i)).equals(" ")) {
+                try {
+                    array[i] = Integer.parseInt(String.valueOf(string.charAt(i)));
+                } catch (Exception e) {
+                    throw new IllegalArgumentException(e);
+                }
+            } else {
+                throw new IllegalArgumentException();
+            }
         }
-
-        //гг в файле
         return array;
     }
 

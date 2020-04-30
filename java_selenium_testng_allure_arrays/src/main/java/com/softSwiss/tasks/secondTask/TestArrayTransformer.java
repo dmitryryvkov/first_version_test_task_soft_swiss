@@ -7,30 +7,35 @@ public class TestArrayTransformer {
     String firstFileName = "array1.txt";
     String secondFileName = "array2.txt";
     String emptyArray = "emptyArray.txt";
-    String arrayWithLetters = "emptyArray.txt";
+    String arrayWithLetters = "strings.txt";
 
     @Test()
-    public void testProcess(){
+    public void testProcess() {
         ArrayTransformer arrayTransformer = new ArrayTransformer();
         arrayTransformer.process(path, firstFileName, secondFileName);
-
     }
 
     @Test(expectedExceptions = IllegalStateException.class)
-    public void testEmptyFileName(){
+    public void testEmptyFileName() {
         ArrayTransformer arrayTransformer = new ArrayTransformer();
         arrayTransformer.process(path, "", secondFileName);
     }
 
     @Test(expectedExceptions = IllegalStateException.class)
-    public void testEmptyPathName(){
+    public void testEmptyPathName() {
         ArrayTransformer arrayTransformer = new ArrayTransformer();
         arrayTransformer.process("", firstFileName, secondFileName);
     }
 
     @Test(expectedExceptions = IllegalStateException.class)
-    public void testEmptyFile(){
+    public void testEmptyFile() {
         ArrayTransformer arrayTransformer = new ArrayTransformer();
         arrayTransformer.process(path, emptyArray, secondFileName);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testFileWithStringArguments() {
+        ArrayTransformer arrayTransformer = new ArrayTransformer();
+        arrayTransformer.process(path, arrayWithLetters, secondFileName);
     }
 }
